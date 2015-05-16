@@ -15,6 +15,7 @@ public class GoogleImage {
   }
 
   private static AsyncHttpClient client = new AsyncHttpClient();
+  private static final int PAGE_SIZE = 8;
 
   public final ImageModel full;
   public final ImageModel thumb;
@@ -24,12 +25,13 @@ public class GoogleImage {
     this.thumb = thumb;
   }
 
-  public static void search(String query, Filters filters, final ResponseHandler handler) {
+  public static void search(String query, Filters filters, int page, final ResponseHandler handler) {
     String url = "https://ajax.googleapis.com/ajax/services/search/images";
     RequestParams params = filters.getParams();
     params.put("q", query);
     params.put("v", "1.0");
-    params.put("rsz", "8");
+    params.put("rsz", PAGE_SIZE);
+    params.put("start", page * PAGE_SIZE);
     client.get(url, params, new JsonHttpResponseHandler() {
       final JSONObject EMPTY_OBJECT = new JSONObject();
       final JSONArray EMPTY_ARRAY = new JSONArray();
@@ -53,7 +55,7 @@ public class GoogleImage {
           String thumbUrl = resultObject.optString("tbUrl");
           int thumbHeight = resultObject.optInt("tbHeight");
           int thumbWidth = resultObject.optInt("tbWidth");
-          ImageModel thumb = new ImageModel(thumbUrl, thumbWidth, thumbWidth);
+          ImageModel thumb = new ImageModel(thumbUrl, thumbWidth, thumbHeight);
 
           imageArray.add(new GoogleImage(full, thumb));
         }

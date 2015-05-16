@@ -26,6 +26,12 @@ public class StreamActivity extends ActionBarActivity implements FiltersDialog.L
   private GridView searchGridView;
   private String query = null;
   private Filters filters = new Filters();
+  private EndlessScrollListener endlessScrollListener = new EndlessScrollListener() {
+    @Override
+    public void onLoadMore(int page, int totalItemsCount) {
+      loadPage(page);
+    }
+  };
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +50,7 @@ public class StreamActivity extends ActionBarActivity implements FiltersDialog.L
         onImageClicked(searchGridAdapter.getItem(position));
       }
     });
+    searchGridView.setOnScrollListener(endlessScrollListener);
   }
 
   private void onImageClicked(GoogleImage item) {
@@ -93,11 +100,22 @@ public class StreamActivity extends ActionBarActivity implements FiltersDialog.L
     if (this.query == null || this.query.isEmpty()) {
       return;
     }
-    GoogleImage.search(query, filters, new GoogleImage.ResponseHandler() {
+    searchGridView.smoothScrollToPosition(0);
+    endlessScrollListener.reset();
+    GoogleImage.search(query, filters, 0, new GoogleImage.ResponseHandler() {
       @Override
       public void onSuccess(ArrayList<GoogleImage> photos) {
-        searchGridView.smoothScrollToPosition(0);
         searchGridAdapter.clear();
+        searchGridAdapter.addAll(photos);
+        searchGridAdapter.notifyDataSetChanged();
+      }
+    });
+  }
+
+  private void loadPage(final int page) {
+    GoogleImage.search(query, filters, page, new GoogleImage.ResponseHandler() {
+      @Override
+      public void onSuccess(ArrayList<GoogleImage> photos) {
         searchGridAdapter.addAll(photos);
         searchGridAdapter.notifyDataSetChanged();
       }
