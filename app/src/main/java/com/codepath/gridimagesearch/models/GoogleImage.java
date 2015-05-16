@@ -24,9 +24,9 @@ public class GoogleImage {
     this.thumb = thumb;
   }
 
-  public static void search(String query, final ResponseHandler handler) {
+  public static void search(String query, Filters filters, final ResponseHandler handler) {
     String url = "https://ajax.googleapis.com/ajax/services/search/images";
-    RequestParams params = new RequestParams();
+    RequestParams params = filters.getParams();
     params.put("q", query);
     params.put("v", "1.0");
     params.put("rsz", "8");
