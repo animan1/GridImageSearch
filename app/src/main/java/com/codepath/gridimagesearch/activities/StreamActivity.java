@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.Toast;
 import com.codepath.gridimagesearch.R;
 import com.codepath.gridimagesearch.adapters.GoogleImageAdapter;
 import com.codepath.gridimagesearch.fragments.FiltersDialog;
@@ -21,6 +22,13 @@ import java.util.ArrayList;
 
 
 public class StreamActivity extends ActionBarActivity implements FiltersDialog.Listener {
+
+  private abstract class ErrorResponseHandler implements GoogleImage.ResponseHandler {
+    @Override
+    public void onFailure(int page, String error) {
+      showError(error);
+    }
+  }
 
   private GoogleImageAdapter searchGridAdapter;
   private GridView searchGridView;
@@ -95,16 +103,37 @@ public class StreamActivity extends ActionBarActivity implements FiltersDialog.L
     });
   }
 
+  private Boolean isNetworkAvailable() {
+    // always return true for now since I am having trouble getting the permission to work. See post on Piazza.
+    return true;
+//    ConnectivityManager connectivityManager
+//        = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+//    NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+//    return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
+  }
+
+  private void showError(String error) {
+    if (error == null) {
+      error = "There was a problem retrieving results.";
+    }
+    Toast.makeText(StreamActivity.this, error, Toast.LENGTH_SHORT).show();
+  }
+
   private void onSearch(String query) {
+    if (!isNetworkAvailable()) {
+      showError("No internet connection available");
+      return;
+    }
+
     this.query = query;
     if (this.query == null || this.query.isEmpty()) {
       return;
     }
     searchGridView.smoothScrollToPosition(0);
     endlessScrollListener.reset();
-    GoogleImage.search(query, filters, 0, new GoogleImage.ResponseHandler() {
+    GoogleImage.search(query, filters, 0, new ErrorResponseHandler() {
       @Override
-      public void onSuccess(ArrayList<GoogleImage> photos) {
+      public void onSuccess(int page, ArrayList<GoogleImage> photos) {
         searchGridAdapter.clear();
         searchGridAdapter.addAll(photos);
         searchGridAdapter.notifyDataSetChanged();
@@ -113,9 +142,14 @@ public class StreamActivity extends ActionBarActivity implements FiltersDialog.L
   }
 
   private void loadPage(final int page) {
-    GoogleImage.search(query, filters, page, new GoogleImage.ResponseHandler() {
+    if (!isNetworkAvailable()) {
+      showError("No internet connection available");
+      return;
+    }
+
+    GoogleImage.search(query, filters, page, new ErrorResponseHandler() {
       @Override
-      public void onSuccess(ArrayList<GoogleImage> photos) {
+      public void onSuccess(int page, ArrayList<GoogleImage> photos) {
         searchGridAdapter.addAll(photos);
         searchGridAdapter.notifyDataSetChanged();
       }
