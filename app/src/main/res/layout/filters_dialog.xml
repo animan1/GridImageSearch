@@ -6,12 +6,32 @@
     android:layout_gravity="center">
   <TableLayout
       android:layout_width="match_parent"
-      android:layout_height="wrap_content">
+      android:layout_height="wrap_content"
+      android:stretchColumns="1">
     <TableRow>
       <TextView
           android:text="Image Size"
           android:textAppearance="?android:attr/textAppearanceLarge"/>
       <Spinner android:id="@+id/imageSizeSpinner"/>
+    </TableRow>
+    <TableRow>
+      <TextView
+          android:text="Color Filter"
+          android:textAppearance="?android:attr/textAppearanceLarge"/>
+      <Spinner android:id="@+id/imageColorSpinner"/>
+    </TableRow>
+    <TableRow>
+      <TextView
+          android:text="Image Type"
+          android:textAppearance="?android:attr/textAppearanceLarge"/>
+      <Spinner android:id="@+id/imageTypeSpinner"/>
+    </TableRow>
+    <TableRow>
+      <TextView
+          android:text="Site Filter"
+          android:textAppearance="?android:attr/textAppearanceLarge"/>
+      <EditText android:id="@+id/siteFilterEditText"
+          android:singleLine="true"/>
     </TableRow>
   </TableLayout>
   <LinearLayout

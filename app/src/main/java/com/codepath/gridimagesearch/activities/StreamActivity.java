@@ -96,7 +96,7 @@ public class StreamActivity extends ActionBarActivity implements FiltersDialog.L
   }
 
   @Override
-  public void onFinish(Filters filters) {
+  public void onFilterDialogFinish(Filters filters) {
     this.filters = filters;
     onSearch(this.query);
   }

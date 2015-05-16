@@ -7,18 +7,26 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import com.codepath.gridimagesearch.R;
 import com.codepath.gridimagesearch.models.Filters;
 
+import java.util.List;
+
 public class FiltersDialog extends DialogFragment {
+
+
   public interface Listener {
-    void onFinish(Filters filters);
+    void onFilterDialogFinish(Filters filters);
   }
 
   public static final String FILTERS = "filters";
 
   private Spinner sizeSpinner;
+  private Spinner colorSpinner;
+  private Spinner typeSpinner;
+  private EditText siteEditText;
   private Listener listener;
   private Filters filters;
 
@@ -43,9 +51,19 @@ public class FiltersDialog extends DialogFragment {
     }
     this.filters = (Filters) getArguments().getSerializable(FILTERS);
     initSizeArraySpinner(view);
+    initColorArraySpinner(view);
+    initTypeArraySpinner(view);
+    initSiteEditText(view);
     initCancelButton(view);
     initSaveButton(view);
     return view;
+  }
+
+  private void initSiteEditText(View view) {
+    siteEditText = (EditText) view.findViewById(R.id.siteFilterEditText);
+    if (this.filters.site != null) {
+      siteEditText.setText(this.filters.site);
+    }
   }
 
   private void initCancelButton(View view) {
@@ -64,9 +82,12 @@ public class FiltersDialog extends DialogFragment {
       @Override
       public void onClick(View v) {
         String size = Filters.SIZES.get(sizeSpinner.getSelectedItem().toString());
-        Filters filters = new Filters(size);
+        String color = Filters.COLORS.get(colorSpinner.getSelectedItem().toString());
+        String type = Filters.TYPES.get(typeSpinner.getSelectedItem().toString());
+        String site = siteEditText.getText().toString();
+        Filters filters = new Filters(size, color, type, site);
         if (listener != null) {
-          listener.onFinish(filters);
+          listener.onFilterDialogFinish(filters);
         }
         dismiss();
       }
@@ -75,12 +96,26 @@ public class FiltersDialog extends DialogFragment {
 
   private void initSizeArraySpinner(View view) {
     sizeSpinner = (Spinner) view.findViewById(R.id.imageSizeSpinner);
-    ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, Filters.SIZE_DISPLAY);
+    initSpinner(sizeSpinner, Filters.SIZE_DISPLAY, Filters.SIZE_VALUES, this.filters.size);
+  }
+
+  private void initColorArraySpinner(View view) {
+    colorSpinner = (Spinner) view.findViewById(R.id.imageColorSpinner);
+    initSpinner(colorSpinner, Filters.COLOR_DISPLAY, Filters.COLOR_VALUES, this.filters.color);
+  }
+
+  private void initTypeArraySpinner(View view) {
+    typeSpinner = (Spinner) view.findViewById(R.id.imageTypeSpinner);
+    initSpinner(typeSpinner, Filters.TYPE_DISPLAY, Filters.TYPE_VALUES, this.filters.type);
+  }
+
+  private void initSpinner(Spinner spinner, List<String> displayValues, List<String> canonicalValues, String currentValue) {
+    ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, displayValues);
     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-    sizeSpinner.setAdapter(adapter);
-    if (this.filters.size != null) {
-      int position = Filters.SIZE_VALUES.indexOf(this.filters.size);
-      sizeSpinner.setSelection(position);
+    spinner.setAdapter(adapter);
+    if (currentValue != null) {
+      int position = canonicalValues.indexOf(currentValue);
+      spinner.setSelection(position);
     }
   }
 }
