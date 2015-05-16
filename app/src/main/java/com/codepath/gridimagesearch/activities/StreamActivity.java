@@ -1,5 +1,6 @@
 package com.codepath.gridimagesearch.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.MenuItemCompat;
@@ -7,6 +8,8 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.GridView;
 import com.codepath.gridimagesearch.R;
 import com.codepath.gridimagesearch.adapters.GoogleImageAdapter;
@@ -35,6 +38,17 @@ public class StreamActivity extends ActionBarActivity implements FiltersDialog.L
     searchGridAdapter = new GoogleImageAdapter(this, new ArrayList<GoogleImage>());
     searchGridView = (GridView) findViewById(R.id.searchGridView);
     searchGridView.setAdapter(searchGridAdapter);
+    searchGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+      @Override
+      public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        onImageClicked(searchGridAdapter.getItem(position));
+      }
+    });
+  }
+
+  private void onImageClicked(GoogleImage item) {
+    Intent intent = new Intent(this, ViewImageActivity.class);
+    startActivity(intent);
   }
 
   @Override
