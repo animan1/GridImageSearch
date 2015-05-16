@@ -48,6 +48,7 @@ public class StreamActivity extends ActionBarActivity implements FiltersDialog.L
 
   private void onImageClicked(GoogleImage item) {
     Intent intent = new Intent(this, ViewImageActivity.class);
+    intent.putExtra(ViewImageActivity.IMAGE, item.full);
     startActivity(intent);
   }
 

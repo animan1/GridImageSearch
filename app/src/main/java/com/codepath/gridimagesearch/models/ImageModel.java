@@ -1,6 +1,8 @@
 package com.codepath.gridimagesearch.models;
 
-public class ImageModel {
+import java.io.Serializable;
+
+public class ImageModel implements Serializable {
   public final String url;
   public final int width;
   public final int height;
