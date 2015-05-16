@@ -1,6 +1,9 @@
 package com.codepath.gridimagesearch.activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.MenuItemCompat;
@@ -104,12 +107,10 @@ public class StreamActivity extends ActionBarActivity implements FiltersDialog.L
   }
 
   private Boolean isNetworkAvailable() {
-    // always return true for now since I am having trouble getting the permission to work. See post on Piazza.
-    return true;
-//    ConnectivityManager connectivityManager
-//        = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-//    NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-//    return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
+    ConnectivityManager connectivityManager
+        = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+    NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+    return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
   }
 
   private void showError(String error) {
