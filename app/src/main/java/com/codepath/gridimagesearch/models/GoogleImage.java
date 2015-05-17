@@ -51,7 +51,13 @@ public class GoogleImage {
       public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
         int responseStatus = response.optInt("responseStatus", 0);
         if (responseStatus != 200) {
-          handler.onFailure(page, response.optString("responseDetails"));
+          String details = response.optString("responseDetails");
+          if ("out of range start".equals(details)) {
+            // We have simply paged too far, return an empty result
+            handler.onSuccess(page, new ArrayList<GoogleImage>());
+          } else {
+            handler.onFailure(page, details);
+          }
           return;
         }
         JSONObject responseDataObject = getObject(response, "responseData");
