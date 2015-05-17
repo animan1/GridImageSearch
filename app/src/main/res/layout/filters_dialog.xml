@@ -10,28 +10,29 @@
       android:stretchColumns="1">
     <TableRow>
       <TextView
-          android:text="Image Size"
+          android:text="@string/imageSize"
           android:textAppearance="?android:attr/textAppearanceLarge"/>
       <Spinner android:id="@+id/imageSizeSpinner"/>
     </TableRow>
     <TableRow>
       <TextView
-          android:text="Color Filter"
+          android:text="@string/colorFilter"
           android:textAppearance="?android:attr/textAppearanceLarge"/>
       <Spinner android:id="@+id/imageColorSpinner"/>
     </TableRow>
     <TableRow>
       <TextView
-          android:text="Image Type"
+          android:text="@string/imageType"
           android:textAppearance="?android:attr/textAppearanceLarge"/>
       <Spinner android:id="@+id/imageTypeSpinner"/>
     </TableRow>
     <TableRow>
       <TextView
-          android:text="Site Filter"
+          android:text="@string/siteFilter"
           android:textAppearance="?android:attr/textAppearanceLarge"/>
       <EditText android:id="@+id/siteFilterEditText"
-          android:singleLine="true"/>
+          android:singleLine="true"
+                android:inputType="text"/>
     </TableRow>
   </TableLayout>
   <LinearLayout
@@ -42,10 +43,10 @@
     <Button android:id="@+id/saveFiltersButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Save"/>
+        android:text="@string/save"/>
     <Button android:id="@+id/cancelFilterButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Cancel"/>
+        android:text="@string/cancel"/>
   </LinearLayout>
 </LinearLayout>
