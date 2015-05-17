@@ -18,6 +18,7 @@ Completed user stories:
  * [x] Required: User can scroll down “infinitely” to continue loading more image results (up to 8 pages)
  * [x] Advanced: Use the ActionBar SearchView or custom layout as the query box instead of an EditText
  * [x] Advanced: Robust error handling, check if internet is available, handle error cases, network failures
+ * [x] Advanced: User can share an image to their friends or email it to themselves
  
 Walkthrough of all user stories:
 
