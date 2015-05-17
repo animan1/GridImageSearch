@@ -19,6 +19,7 @@ Completed user stories:
  * [x] Advanced: Use the ActionBar SearchView or custom layout as the query box instead of an EditText
  * [x] Advanced: Robust error handling, check if internet is available, handle error cases, network failures
  * [x] Advanced: User can share an image to their friends or email it to themselves
+ * [x] Advanced: Replace Filter Settings Activity with a lightweight modal overlay
  
 Walkthrough of all user stories:
 
