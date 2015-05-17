@@ -2,7 +2,7 @@
 
 This is an Android application for performing image searches using an API provided by Google.
 
-Time spent: 9 hours spent in total
+Time spent: 12 hours spent in total
 
 Completed user stories:
 
@@ -20,6 +20,7 @@ Completed user stories:
  * [x] Advanced: Robust error handling, check if internet is available, handle error cases, network failures
  * [x] Advanced: User can share an image to their friends or email it to themselves
  * [x] Advanced: Replace Filter Settings Activity with a lightweight modal overlay
+ * [x] Advanced: Improve the user interface and experiment with image asset placeholder
  
 Walkthrough of all user stories:
 
